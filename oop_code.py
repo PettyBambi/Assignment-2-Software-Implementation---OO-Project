@@ -2,15 +2,22 @@ from enum import Enum
 
 class HistoricalSignificance(Enum):
     """Class to represent scale of importance"""
-    MIN = "Minimal importance"
-    MEDIUM = "Medium importance"
-    HIGH = "High importance"
+    Low_Importance = "L"
+    Medium_Importance = "M"
+    High_Importance = "H"
 
 class ExhibitionLocation(Enum):
     """Class to represent artwork location"""
-    PERMANENT_GALLERY = "Permanent Gallery"
-    EXHIBITION_HALL = "Exhibition Hall"
-    OUTDOOR_SPACE = "Outdoor Space"
+    Permanent_Gallery = "PG"
+    Exhibition_Hall = "EH"
+    Outdoor_Space = "OS"
+
+class Gender_f_m(Enum):
+    """Class to represent gender"""
+    Male = "M"
+    Female = "F"
+
+
 
 class Museum_details:
     """Class to represent Museum"""
@@ -55,14 +62,16 @@ class Museum_details:
 
     def __str__(self):
         return "Name: " + str(self._name) +'\n'+"Location: " + str(self._location) + '\n'+"Museum Hours: " + str(self._Museum_hours) + '\n'+"Artworks: " + str(self._artworks) + '\n'+"Exhibitions: " + str(self._exhibitions) + '\n'+"Pricing: " + str(self._pricing)
+
+
 class Artwork:
     """Class to represent artwork in a museum"""
     def __init__(self,title, artist, date_of_creation, historical_significance, exhibition_location):
         self._title= title
         self._artist = artist
         self._date_of_creation = date_of_creation
-        self._historical_significance = historical_significance
-        self._exhibition_location = exhibition_location
+        self._historical_significance = (HistoricalSignificance(historical_significance).name).replace("_", " ")
+        self._exhibition_location = (ExhibitionLocation(exhibition_location).name).replace("_", " ")
 
     # Setters and getters
     def set_title(self, title):
@@ -81,26 +90,59 @@ class Artwork:
         return self._date_of_creation
 
     def set_historical_significance(self, historical_significance):
-        if historical_significance == historical_significance.MIN.value:
-            self._exhibition_location=historical_significance.MIN.value
-        elif historical_significance == historical_significance.MEDIUM.value:
-            self._historical_significance = historical_significance.MEDIUM.value
-        else:
-            self._historical_significance = historical_significance.HiGH.value
+        self._historical_significance = historical_significance
     def get_historical_significance(self):
         return self._historical_significance
 
     def set_exhibition_location(self, exhibition_location):
-        if exhibition_location == ExhibitionLocation.EXHIBITION_HALL.value:
-            self._exhibition_location=ExhibitionLocation.EXHIBITION_HALL.value
-        elif exhibition_location == ExhibitionLocation.OUTDOOR_SPACE.value:
-            self._exhibition_location = ExhibitionLocation.OUTDOOR_SPACE.value
-        else:
-            self._exhibition_location = ExhibitionLocation.PERMANENT_GALLERY.value
+        self._exhibition_location = exhibition_location
     def get_exhibition_location(self):
         return self._exhibition_location
 
     def __str__(self):
-        return "Title: " + str(self._title) + ", Artist: " + str(self._artist) + ", Date of Creation: " + str(self._date_of_creation) + ", Historical Significance: " + str(self._historical_significance.value) + ", Exhibition Location: " + str(self._exhibition_location.value)
+        return "Title: " + str(self._title) + ", Artist: " + str(self._artist) + ", Date of Creation: " + str(self._date_of_creation) + ", Historical Significance: " + self._historical_significance+ ", Exhibition Location: " + self._exhibition_location
 
 
+class Visitor:
+    """Class to represent a visitor"""
+    def __init__(self,first_name,last_name,age,nationality,gender):
+        self._first_name=first_name
+        self._last_name=last_name
+        self._age=age
+        self._nationality=nationality
+        self._gender=Gender_f_m(gender).name
+
+    # Setters and getters
+    def set_first_name(self, first_name):
+        self._first_name = first_name
+    def get_first_name(self):
+        return self._first_name
+
+    def set_last_name(self, last_name):
+        self._last_name = last_name
+    def get_last_name(self):
+        return self._last_name
+
+    def set_age(self, age):
+        self._age = age
+    def get_age(self):
+        return self._age
+
+    def set_nationality(self, nationality):
+        self._nationality = nationality
+    def get_nationality(self):
+        return self._nationality
+
+    def set_gender(self, gender):
+        self._gender = gender
+    def get_gender(self):
+        return self._gender
+
+    def __str__(self):
+        return "Name: " + str(self._first_name) +" "+ str(self._last_name) + ", Age: " + str(self._age) + ", Nationality: " + str(self._nationality) + ", Gender: " + self._gender
+
+
+artwork1 = Artwork("random title", "random artist", "1734", 'L', 'EH')
+print(artwork1)
+visitor1 = Visitor("Random", "Name", 30, "Random Nationality", "M")
+print(visitor1)
