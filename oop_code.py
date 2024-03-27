@@ -66,12 +66,14 @@ class Museum_details:
 
 class Artwork:
     """Class to represent artwork in a museum"""
+    all_artworks=[]
     def __init__(self,title, artist, date_of_creation, historical_significance, exhibition_location):
         self._title= title
         self._artist = artist
         self._date_of_creation = date_of_creation
         self._historical_significance = (HistoricalSignificance(historical_significance).name).replace("_", " ")
         self._exhibition_location = (ExhibitionLocation(exhibition_location).name).replace("_", " ")
+        Artwork.all_artworks.append(self)
 
     # Setters and getters
     def set_title(self, title):
@@ -105,12 +107,15 @@ class Artwork:
 
 class Visitor:
     """Class to represent a visitor"""
-    def __init__(self,first_name,last_name,age,nationality,gender):
+    def __init__(self,first_name,last_name,age,nationality,gender,visitor_type):
         self._first_name=first_name
         self._last_name=last_name
         self._age=age
         self._nationality=nationality
         self._gender=Gender_f_m(gender).name
+        self._visitor_type = visitor_type
+
+
 
     # Setters and getters
     def set_first_name(self, first_name):
@@ -138,11 +143,40 @@ class Visitor:
     def get_gender(self):
         return self._gender
 
+    def set_visitor_type(self, visitor_type):
+        self._visitor_type = visitor_type
+    def get_visitor_type(self):
+        return self._visitor_type
+
     def __str__(self):
         return "Name: " + str(self._first_name) +" "+ str(self._last_name) + ", Age: " + str(self._age) + ", Nationality: " + str(self._nationality) + ", Gender: " + self._gender
 
+class Ticket:
+    """Class to represents a ticket"""
+    def __init__(self,visitor,artwork,ticket_type):
+        self._visitor = visitor
+        self._artwork = artwork
+        self._ticket_type = ticket_type
+        self._purchased_tickets = []
 
-artwork1 = Artwork("random title", "random artist", "1734", 'L', 'EH')
-print(artwork1)
-visitor1 = Visitor("Random", "Name", 30, "Random Nationality", "M")
-print(visitor1)
+    def price_ticket(self):
+        ticket_price = 0
+
+        if self._visitor.get_age() < 18 or self._visitor.get_age() >= 60 or self._visitor.get_visitor_type() in ["teacher", "student"]:
+            return ticket_price
+
+        base_price=63
+        if self._ticket_type == "special event":
+            base_price += 100
+        if self._ticket_type == "group":
+            base_price *= 0.5
+        ticket_price = base_price*1.05
+        return ticket_price
+
+    def add_purchased_ticket(self,artwork,ticket_type):
+        self._purchased_tickets.append((artwork.get_title(),ticket_type))
+    def get_purchased_tickets(self):
+        return self._purchased_tickets
+
+
+
